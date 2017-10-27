@@ -24,3 +24,5 @@ public class CourseApiApp {
 // REST API
 // what are resources? nouns/entities
 // look at way consumers access API
+
+// application.properties contains common application properties

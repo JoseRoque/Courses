@@ -1,20 +1,38 @@
 package com.josejroque.springbootquickstart.topic;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TopicController {
-	@RequestMapping("/topics")
+	
+	@Autowired
+	private TopicService topicService; // marked as need dependency injection
+	
+	@RequestMapping(method=RequestMethod.GET, value="/topics")
 	public List<Topic> getAllTopics() {
-		return Arrays.asList( 
-				new Topic("python", "PEP8", "python standard"),
-				new Topic("java", "Effective Java", "Java gotchas"),
-				new Topic("C", "C programming language", "Intro to programming")
-				);
+		return topicService.getAllTopics();
 	}
 	// converted to JSON auto
+	
+	@RequestMapping(method=RequestMethod.GET, value="/topics/{id}")
+	public Topic getTopic(@PathVariable final String id) {
+		return topicService.getTopic(id);
+	}
+	
+	@RequestMapping(method=RequestMethod.PUT, value="/topics")
+	public void addTopic(@RequestBody Topic topic, @PathVariable final String id) {
+		topicService.updateTopic(id, topic);
+	}
+	
+	@RequestMapping(method=RequestMethod.DELETE, value="/topics/{id}")
+	public void deleteTopic(@PathVariable final String id) {
+		topicService.deleteTopic(id);
+	}
 }
